@@ -1,0 +1,31 @@
+PATH
+  remote: .
+  specs:
+    share (0.1.0)
+      websocket-rack (~> 0.4.0)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    addressable (2.3.2)
+    daemons (1.1.9)
+    em-websocket (0.3.8)
+      addressable (>= 2.1.1)
+      eventmachine (>= 0.12.9)
+    eventmachine (1.0.0.rc.4)
+    rack (1.4.1)
+    thin (1.4.1)
+      daemons (>= 1.0.9)
+      eventmachine (>= 0.12.6)
+      rack (>= 1.0.0)
+    websocket-rack (0.4.0)
+      em-websocket (~> 0.3.6)
+      eventmachine (~> 1.0.0.beta.4)
+      rack
+      thin
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  share!
