@@ -1,0 +1,15 @@
+module Share
+  module Types
+    LEFT = "left"
+    RIGHT = "right"
+
+    TYPE_MAP = {
+      'json' => Types::JSON,
+      'text' => Types::Text
+    }
+
+    def self.[] name
+      TYPE_MAP[name]
+    end
+  end
+end
