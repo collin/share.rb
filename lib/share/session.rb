@@ -1,5 +1,9 @@
+require 'securerandom'
+
 module Share
   class Session
+    attr_reader :id
+
     def initialize(data)
       @id = SecureRandom.hex
       @connect_time = Time.now()
@@ -15,7 +19,7 @@ module Share
       meta = {}
       meta[:creator] = @name if @name
       meta[:ctime] = meta.mtime = Date.current()
-      action = Action.new(name: name, type: type, meta: meta, 'create')
+      action = Action.new({name: name, type: type, meta: meta}, 'create')
       authorize! action
       Document.create!(name, type, meta)
     end
@@ -26,14 +30,14 @@ module Share
       dup_if_source = data.dup_if_source || []
       if data[OPERATION]
         action = Action.new(
-          name: name, type: type, meta: data[:meta], VERSION => data[VERSION],
+          {name: name, type: type, meta: data[:meta], VERSION => data[VERSION]},
           'submit op'
         )
         authorize! action
         Document.apply_operation!(name, data)
       else
         action = Action.new(
-          name: name, meta: data[:meta], 'submit meta'
+          {name: name, meta: data[:meta]}, 'submit meta'
         )
         authorize! action
         Document.apply_meta_operation!(name, data)
@@ -41,7 +45,7 @@ module Share
     end
 
     def delete(name)
-      action = Action.new(name: name, 'delete')
+      action = Action.new({name: name}, 'delete')
       authorize! action
       Document.delete!(name)
     end

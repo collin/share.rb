@@ -16,18 +16,22 @@ module Share
       @repo.unsubscribe @session.id, &method(:subscription_handler)
     end
 
+    # Rack::WebSocket callback
     def on_open(env)
       send_data protocol.handshake(session)
     end
 
+    # Rack::WebSocket callback
     def on_close(env)
 
     end
 
+    # Rack::WebSocket callback
     def on_error(env, error)
 
     end
 
+    # Rack::WebSocket callback
     def on_message(env, raw_message)
       message = Message.new(raw_message)
       response = @protocol.respond_to(message)

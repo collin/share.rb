@@ -3,6 +3,9 @@ module Share
     LEFT = "left"
     RIGHT = "right"
 
+    require_relative "./types/json"
+    require_relative "./types/text"
+
     TYPE_MAP = {
       'json' => Types::JSON,
       'text' => Types::Text

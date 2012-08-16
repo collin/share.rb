@@ -55,7 +55,7 @@ module Share
         serialize :meta, JSON
       end
 
-      class Document
+      class Document < Abstract::Document
         def self.create_tables
           CreateOperations.migrate(:up) unless Operation.table_exists?
           CreateSnapshots.migrate(:up) unless Snapshot.table_exists?

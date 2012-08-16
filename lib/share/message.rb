@@ -1,17 +1,25 @@
+require 'json'
+require 'active_support/hash_with_indifferent_access'
+
+
 module Share
   class Message
+    HWIA = ActiveSupport::HashWithIndifferentAccess
+
     def initialize(raw_data)
-      @data = JSON.parse raw_data
+      @data = HWIA.new JSON.parse raw_data
       validate!
     end
 
     def validate!
-      if operation? || close? && ( create? || snapshot? || open? )
-        raise ProtocolError.new("Bad combination of message properties.")
+      if (operation? || close?) && ( create? || snapshot? || open? )
+        raise ProtocolError.new \
+          ["Bad combination of message properties.", @data.inspect]
       end
 
       if create? && !type
-        raise ProtocolError.new("Bad or missing type when creating document.")
+        raise ProtocolError.new \
+          ["Bad or missing type when creating document.", @data.inspect]
       end
     end
 
@@ -28,7 +36,7 @@ module Share
     end
 
     def snapshot?
-      @data[:snapshot] == nil
+      @data.key?(:snapshot) && @data[:snapshot] == nil
     end
 
     def open?
@@ -40,7 +48,7 @@ module Share
     end
 
     def operation?
-      @data[:operation]
+      @data[:op]
     end
 
     def version

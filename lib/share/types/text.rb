@@ -142,7 +142,7 @@ module Share
             # They overlap somewhere.
             new_component = {DELETE => '', POSITION => component[POSITION]}
             if component[POSITION] < other[POSITION]
-              new_component[DELETE] = component[DELETE][0, other[POSITION] - component[POSITION]
+              new_component[DELETE] = component[DELETE][0, other[POSITION] - component[POSITION]]
             end
 
             if component[POSITION] + component[DELETE].length > other[POSITION] + other[DELETE].length

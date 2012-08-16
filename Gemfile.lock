@@ -2,12 +2,15 @@ PATH
   remote: .
   specs:
     share (0.1.0)
+      activesupport (~> 3.0.0)
       websocket-rack (~> 0.4.0)
 
 GEM
   remote: https://rubygems.org/
   specs:
+    activesupport (3.0.17)
     addressable (2.3.2)
+    ansi (1.4.2)
     daemons (1.1.9)
     em-websocket (0.3.8)
       addressable (>= 2.1.1)
@@ -18,6 +21,8 @@ GEM
       daemons (>= 1.0.9)
       eventmachine (>= 0.12.6)
       rack (>= 1.0.0)
+    turn (0.9.5)
+      ansi
     websocket-rack (0.4.0)
       em-websocket (~> 0.3.6)
       eventmachine (~> 1.0.0.beta.4)
@@ -29,3 +34,4 @@ PLATFORMS
 
 DEPENDENCIES
   share!
+  turn
