@@ -8,6 +8,12 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
+    ParseTree (3.0.9)
+      RubyInline (~> 3.9.0)
+      sexp_processor (~> 3.2.0)
+    RubyInline (3.9.0)
+      ZenTest (~> 4.3)
+    ZenTest (4.8.2)
     activesupport (3.0.17)
     addressable (2.3.2)
     ansi (1.4.2)
@@ -16,7 +22,17 @@ GEM
       addressable (>= 2.1.1)
       eventmachine (>= 0.12.9)
     eventmachine (1.0.0.rc.4)
+    heckle (1.4.3)
+      ParseTree (>= 2.0.0)
+      ZenTest (>= 3.5.2)
+      ruby2ruby (>= 1.1.6)
     rack (1.4.1)
+    ruby2ruby (1.3.1)
+      ruby_parser (~> 2.0)
+      sexp_processor (~> 3.0)
+    ruby_parser (2.3.1)
+      sexp_processor (~> 3.0)
+    sexp_processor (3.2.0)
     thin (1.4.1)
       daemons (>= 1.0.9)
       eventmachine (>= 0.12.6)
@@ -33,5 +49,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  heckle (~> 1.4.3)
   share!
   turn

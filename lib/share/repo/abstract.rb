@@ -2,11 +2,13 @@ module Share
   module Repo
     class Abstract
 
+      attr_reader :adapter
+
       class MissingAdapterError < ArgumentError; end
 
       def initialize(options = {})
         unless options[:adapter] && options[:adapter] < Share::Adapter::Abstract::Document
-          raise MissingAdapterError < ArgumentError
+          raise MissingAdapterError.new
         end
 
         @adapter = options[:adapter]

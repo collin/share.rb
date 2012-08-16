@@ -3,6 +3,6 @@ source "https://rubygems.org"
 
 gemspec
 
-group 'development' do
-  gem 'turn'
+group "development" do
+  gem "turn"
 end

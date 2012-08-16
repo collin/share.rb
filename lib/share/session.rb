@@ -14,17 +14,17 @@ module Share
       @name = nil
     end
 
-    def create(name, type, meta)
+    def create(adapter, name, type, meta)
       type = TYPE_MAP[type] if type.is_a?(String)
       meta = {}
       meta[:creator] = @name if @name
-      meta[:ctime] = meta.mtime = Date.current()
+      meta[:ctime] = meta[:mtime] = Time.now()
       action = Action.new({name: name, type: type, meta: meta}, 'create')
       authorize! action
-      Document.create!(name, type, meta)
+      adapter.create!(name, type, meta)
     end
 
-    def submit_op(name, data)
+    def submit_op(adapter, name, data)
       data[:meta] ||= {}
       data[:meta].source = id
       dup_if_source = data.dup_if_source || []
@@ -34,20 +34,24 @@ module Share
           'submit op'
         )
         authorize! action
-        Document.apply_operation!(name, data)
+        adapter.apply_operation!(name, data)
       else
         action = Action.new(
           {name: name, meta: data[:meta]}, 'submit meta'
         )
         authorize! action
-        Document.apply_meta_operation!(name, data)
+        adapter.apply_meta_operation!(name, data)
       end
     end
 
-    def delete(name)
+    def authorize!(action)
+      
+    end
+
+    def delete(adapter, name)
       action = Action.new({name: name}, 'delete')
       authorize! action
-      Document.delete!(name)
+      adapter.delete!(name)
     end
   end
 end
