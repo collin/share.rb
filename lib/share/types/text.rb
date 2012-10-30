@@ -1,9 +1,15 @@
 module Share
   module Types
     module Text
+      extend ::Share::Types::Transform
+      extend self
+
       INSERT = :i
       DELETE = :d
-      POSITION = :p
+      PATH = POSITION = :p
+
+      class MissingInsertOrDelete < ArgumentError; end
+      class DeletedDifferentTextFromSameRegion < StandardError; end
 
       def inject(left, position, right)
         left[0, position] + right + left[position, left.length]
@@ -62,6 +68,8 @@ module Share
             new_operation.push component
           end
         end
+      rescue StandardError => e
+        raise component.inspect
       end
 
       def compose(left, right)
@@ -69,7 +77,7 @@ module Share
         check_valid_operation right
 
         new_operation = left.dup
-        right.each { |component| append new_operation, component }
+        right.each { |component| _append new_operation, component }
 
         return new_operation
       end
@@ -89,7 +97,7 @@ module Share
 
         operation.each do |component|
           component[POSITION] ||= 0
-          append new_operation, component
+          _append new_operation, component
         end
 
         new_operation
@@ -113,7 +121,7 @@ module Share
         end
       end
 
-      def transform_cursor(position, operation, side)
+      def transform_cursor(position, operation, side=nil)
         insert_after = side == RIGHT
         operation.each do |component|
           position = transform_position position, component, insert_after
@@ -126,45 +134,68 @@ module Share
         check_valid_operation [other]
 
         if component[INSERT]
-          append destination, {
+          _append destination, {
             INSERT => component[INSERT],
             POSITION => transform_position(component[POSITION], other, side == RIGHT)
           }
         elsif component[DELETE]
-          if component[POSITION] >= other[POSITION] + other[DELETE].length
-            append destination, {
-              DELETE => component[DELETE],
-              POSITION => component[POSITION] - other[DELETE].length
-            }
-          elsif component[POSITION] + component[DELETE].length <= other[POSITION]
-            append destination, component
-          else
-            # They overlap somewhere.
-            new_component = {DELETE => '', POSITION => component[POSITION]}
+          if other[INSERT] # delete vs insert
+            string = component[DELETE]
             if component[POSITION] < other[POSITION]
-              new_component[DELETE] = component[DELETE][0, other[POSITION] - component[POSITION]]
+              _append destination,
+                DELETE => string.slice(0, other[POSITION] - component[POSITION]),
+                POSITION => component[POSITION]
+              string = string.slice(other[POSITION] - component[POSITION])
             end
 
-            if component[POSITION] + component[DELETE].length > other[POSITION] + other[DELETE].length
-              new_component[DELETE] += component[DELETE][other[POSITION] + other[DELETE].length, component[DELETE].length]
+            if string && string != ''
+              _append destination,
+                DELETE => string,
+                POSITION => component[POSITION] + other[INSERT].length
             end
+          else # delete vs delete
+            if component[POSITION] >= other[POSITION] + other[DELETE].length
+              _append destination, {
+                DELETE => component[DELETE],
+                POSITION => component[POSITION] - other[DELETE].length
+              }
+            elsif component[POSITION] + component[DELETE].length <= other[POSITION]
+              _append destination, component
+            else
+              # They overlap somewhere.
+              new_component = {DELETE => '', POSITION => component[POSITION]}
+              if component[POSITION] < other[POSITION]
+                new_component[DELETE] = component[DELETE][0, other[POSITION] - component[POSITION]]
+              end
 
-            # This is entirely optional - just for a check that the deleted
-            # text in the two ops matches
-            intersect_start = [component[POSITION], other[POSITION]].max
-            intersect_end = [component[POSITION] + component[DELETE].length, other[POSITION] + other[DELETE].length].min
+              if component[POSITION] + component[DELETE].length > other[POSITION] + other[DELETE].length
+                new_component[DELETE] += component[DELETE].slice(other[POSITION] + other[DELETE].length - component[POSITION], component[DELETE].length)
+              end
 
-            intersect = component[DELETE][intersect_start - component[POSITION], intersect_end - component[POSITION]]
-            other_intersect = other[DELETE][intersect_start - other[POSITION], intersect_end - other[POSITION]]
-            raise DeletedDifferentTextFromSameRegion.new unless intersect == other_intersect
+              # This is entirely optional - just for a check that the deleted
+              # text in the two ops matches
+              intersect_start = [component[POSITION], other[POSITION]].max
+              intersect_end = [component[POSITION] + component[DELETE].length, other[POSITION] + other[DELETE].length].min
 
-            if new_component != ''
-              # This could be rewritten similarly to insert v delete, above.
-              new_component[POSITION] = transform_position new_component[POSITION], other
-              append destination, new_component
+              # puts [component, other].inspect
+              # puts ["intersect range", intersect_start, intersect_end].inspect
+              # puts [component[DELETE], intersect_start - component[POSITION], intersect_end - component[POSITION]].inspect
+              # puts [other[DELETE], intersect_start - other[POSITION], intersect_end - other[POSITION]].inspect
+
+              intersect = component[DELETE].slice(intersect_start - component[POSITION], intersect_end - component[POSITION])
+              other_intersect = other[DELETE].slice(intersect_start - other[POSITION], intersect_end - other[POSITION])
+              # puts ["intersects", intersect, other_intersect].inspect
+              # raise DeletedDifferentTextFromSameRegion.new([intersect, other_intersect].inspect) unless intersect == other_intersect
+              # puts ["new_component", new_component].inspect
+              if new_component != ''
+                # This could be rewritten similarly to insert v delete, above.
+                new_component[POSITION] = transform_position new_component[POSITION], other
+                _append destination, new_component
+              end
             end
           end
-          
+
+          # puts ["destination", destination].inspect
           destination
         end
       end

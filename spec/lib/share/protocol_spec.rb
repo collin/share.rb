@@ -1,4 +1,4 @@
-require_relative "../spec_helper"
+require 'spec_helper'
 
 class TestAdapter < Share::Adapter::Abstract::Document
   def self.create!(name, type, meta)
@@ -67,7 +67,7 @@ describe Share::Protocol do
   end
 
   it "creates a handshake response" do
-    assert protocol.handshake == {auth: session.id}
+    protocol.handshake.should == {auth: session.id}
   end
   
   describe "respond_to(message)" do
@@ -79,7 +79,7 @@ describe Share::Protocol do
       end
 
       it "closes" do
-        assert response[:open] == false, "response open is false"
+        response[:open].should == false
       end
     end
 
@@ -90,7 +90,7 @@ describe Share::Protocol do
       end
 
       it "responds with create: false" do
-        assert response[:create] == false
+        response[:create].should == false
       end
     end
 
@@ -100,11 +100,11 @@ describe Share::Protocol do
       end
 
       it "responds with create: true" do
-        assert response[:create] == true
+        response[:create].should == true
       end
 
       it "responds with document metadata" do
-        assert response[:meta] == :metadata
+        response[:meta].should == :metadata
       end
     end
 
@@ -114,8 +114,8 @@ describe Share::Protocol do
       end
 
       it "responds with an error" do
-        assert response.has_key?(:error)
-        assert response[:error].match "Document does not exist"
+        response.has_key?(:error).should == true
+        response[:error].should match "Document does not exist"
       end
     end
 
@@ -125,8 +125,8 @@ describe Share::Protocol do
       end
 
       it "responds with an error" do
-        assert response.has_key?(:error)
-        assert response[:error].match "Type mismatch"
+        response.has_key?(:error).should == true
+        response[:error].should match "Type mismatch"
       end
     end
 
@@ -136,7 +136,7 @@ describe Share::Protocol do
       end
 
       it "cancels opening the document" do
-        assert response[:open] == false
+        response[:open].should == false
       end
     end
 
@@ -147,7 +147,7 @@ describe Share::Protocol do
       end
 
       it "responds with the snapshot" do
-        assert response[:snapshot] == :snapshot
+        response[:snapshot].should == :snapshot
       end
     end
 
@@ -158,16 +158,16 @@ describe Share::Protocol do
       end
 
       it "responds in the affirmative" do
-        assert response[:open] == true
+        response[:open].should == true
       end
 
       it "responds with the opened version" do
-        assert response[:v] == :version
+        response[:v].should == :version
       end
 
       it "subscribes to the document" do
         response
-        assert app.subscriptions["test"].include?(session.id) == true
+        app.subscriptions["test"].include?(session.id).should == true
       end
     end
   end

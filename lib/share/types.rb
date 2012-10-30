@@ -3,6 +3,7 @@ module Share
     LEFT = "left"
     RIGHT = "right"
 
+    require_relative "./types/transform"
     require_relative "./types/json"
     require_relative "./types/text"
 
