@@ -84,6 +84,7 @@ module Share
             meta: data[:meta],
             _type: type
           )
+          self.snapshot = data[:snapshot]
           self
         end
 
@@ -99,17 +100,13 @@ module Share
           get_snapshot.meta if exists?
         end
 
-        def snapshot
-          get_snapshot.snapshot if exists?
-        end
-
         def delete(meta)
           [Operation.where(doc: @name).destroy_all,
           Snapshot.where(doc: @name).destroy_all]
         end
 
         def get_snapshot
-          @snapshot ||= Snapshot.where(doc: @name).order('v DESC').first
+          @get_snapshot ||= Snapshot.where(doc: @name).order('v DESC').first
         end
 
         def write_snapshot(data, meta)

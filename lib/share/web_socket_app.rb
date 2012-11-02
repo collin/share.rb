@@ -57,7 +57,7 @@ module Share
       logger.debug "Responded"
     rescue StandardError => error
       logger.error error
-      logger.error caller * "\n"      
+      logger.error error.backtrace.join("\n")
     end
 
     # update via observable

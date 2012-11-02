@@ -83,7 +83,7 @@ module Share
             end
           rescue Exception => error
             logger.error error
-            logger.error caller * "\n"
+            logger.error error.backtrace.join("\n")
           end
 
           begin
@@ -94,7 +94,7 @@ module Share
             logger.debug ["new snapshot:", snapshot]
           rescue Exception => error
             logger.error error            
-            logger.error caller * "\n"
+            logger.error error.backtrace.join("\n")
           end
 
           unless version == document.version
@@ -110,6 +110,7 @@ module Share
           )
 
           document.version = version + 1
+          document.snapshot = snapshot
           logger.debug "Set version #{document}"
           document.notify_observers( v:version, op:operation, meta:meta )
         end

@@ -7,6 +7,7 @@ module Share
         REAP_TIME = 60 * 60 # 1.minute
 
         attr_accessor :version
+        attr_accessor :snapshot
         attr_reader :name
 
         def initialize(name)

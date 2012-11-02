@@ -17,6 +17,7 @@ module Share
       end
 
       def inject(left, position, right)
+        logger.debug ["#{self.class}#inject", left, position, right]
         left[0, position] + right + left[position, left.length]
       end
 
@@ -49,6 +50,7 @@ module Share
             snapshot = snapshot[0, component[POSITION]] + snapshot[component[POSITION] + component[DELETE].length, snapshot.length]
           end
         end
+        snapshot
       end
 
       def _append(new_operation, component)
