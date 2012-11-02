@@ -5,27 +5,19 @@ module ActionController
     include ActionController::WebSocket
 
     def share_repository(repository)
-      session = ::Share::Session.new
+      logger.debug "Initializing Share::Session"
+      session = ::Share::Session.new(connection_data, repository)
+      logger.debug "Bulding Share::WebSocketApp"
       socket_application = ::Share::WebSocketApp.new(repository, session)
+      logger.debug "Upgrading to WebSocket"
       websocket_upgrade socket_application
     end
 
-  end
-end
-
-
-class LayoutsController < ApplicationController
-  include ActionController::Share
-
-  def index
-    share_repository layouts_repository
-  end
-
-  def layouts_repository
-    Thread.current[:layouts_repository] ||= begin
-      Share::Repo::InProcess.new(
-        adapter: Share::Adapter::ActiveRecord
-      )
+    def connection_data
+      return {
+        headers: request.headers,
+        remote_address: request.remote_addr
+      }
     end
   end
 end

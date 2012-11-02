@@ -1,0 +1,10 @@
+<h1><%= @pad_id %></h1>
+<textarea id="pad"></textarea>
+
+<script type="text/javascript">
+var elem = document.getElementById('pad');
+var url = "ws://localhost:3000/pads/share";
+sharejs.open('<%= @pad_id %>', 'text', url, function(error, doc) {
+  doc.attach_textarea(elem);
+});
+</script>

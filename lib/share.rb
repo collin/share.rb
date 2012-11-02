@@ -1,5 +1,9 @@
+require "thread_safe"
+require "thread"
+
 $LOAD_PATH.push File.join __FILE__, ".."
 module Share
+
   require "share/action"
   require "share/session"
   require "share/message"

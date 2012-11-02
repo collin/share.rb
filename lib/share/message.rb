@@ -6,8 +6,10 @@ module Share
   class Message
     HWIA = ActiveSupport::HashWithIndifferentAccess
 
+    attr_reader :data
+
     def initialize(raw_data)
-      @data = HWIA.new JSON.parse raw_data
+      @data = HWIA.new JSON.parse(raw_data)
       validate!
     end
 
@@ -47,7 +49,15 @@ module Share
       @data[:open] == false
     end
 
+    def auth?
+      @data.has_key?(:auth)
+    end
+
     def operation?
+      operation
+    end
+
+    def operation
       @data[:op]
     end
 

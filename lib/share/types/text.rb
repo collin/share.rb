@@ -7,16 +7,17 @@ module Share
       INSERT = :i
       DELETE = :d
       PATH = POSITION = :p
+      DEFAULT_VALUE = ""
 
       class MissingInsertOrDelete < ArgumentError; end
       class DeletedDifferentTextFromSameRegion < StandardError; end
 
-      def inject(left, position, right)
-        left[0, position] + right + left[position, left.length]
+      def logger
+        Rails.logger
       end
 
-      def create
-        ''
+      def inject(left, position, right)
+        left[0, position] + right + left[position, left.length]
       end
 
       def check_valid_component(component)
@@ -34,7 +35,9 @@ module Share
       end
 
       def apply(snapshot, operation)
+        logger.debug ["apply operation, #{operation}"]
         check_valid_operation operation
+        logger.debug ["operation components valid"]
         operation.each do |component|
           if component[INSERT]
             snapshot = inject snapshot, component[POSITION], component[INSERT]
