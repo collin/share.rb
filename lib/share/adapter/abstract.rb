@@ -6,9 +6,10 @@ module Share
       class Document
         REAP_TIME = 60 * 60 # 1.minute
 
-        attr_accessor :version
-        attr_accessor :snapshot
+        attr_accessor :snapshot, :version, :comitted_version
         attr_reader :name
+
+        def logger; Rails.logger end
 
         def initialize(name)
           @name = name
@@ -19,6 +20,8 @@ module Share
           else
             0
           end
+          @comitted_version = @version
+          load_snapshot
         end
 
         def to_s
@@ -36,6 +39,26 @@ module Share
         def delete_observer(observer)
           synchronize do
             @observer.delete(observer)            
+          end
+        end
+
+        def load_snapshot
+          return nil unless _snapshot = most_recent_snapshot
+          @snapshot = _snapshot.snapshot
+          @comitted_version = @version
+          return _snapshot.snapshot if _snapshot.v == @version
+          logger.debug "Catchup #{@name} #{_snapshot.v} => #{@version}"
+          get_ops(@comitted_version).each do |operation|
+            begin
+              @snapshot = type.apply @snapshot, operation.op
+              @version += 1
+            rescue Exception => error
+              logger.error "Database corruption detected when catching up."
+              logger.error error
+              logger.error error.backtrace * "\n"
+              logger.error ["document", self]
+              logger.error ["operation:", operation]
+            end
           end
         end
 
@@ -82,7 +105,7 @@ module Share
         end
 
         def write_snapshot(data, meta)
-          raise "Undefined"
+          @comitted_version = data[:v]
         end
 
         def get_ops(start_at, end_at=MAX_VERSION)

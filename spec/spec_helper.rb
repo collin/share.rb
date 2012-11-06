@@ -7,6 +7,7 @@ require "ruby-debug"
 
 RSpec.configure do |config|
   config.color_enabled = true
+  # config.filter_run focus:true
 end
 
 poem = open("spec/data/jabberwocky.txt").read.split(/\s+/)

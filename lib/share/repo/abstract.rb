@@ -2,6 +2,8 @@ module Share
   module Repo
     class Abstract
 
+      OPS_BEFORE_COMMIT = 20
+
       attr_reader :adapter
 
       class MissingAdapterError < ArgumentError; end
@@ -113,6 +115,15 @@ module Share
           document.snapshot = snapshot
           logger.debug "Set version #{document}"
           document.notify_observers( v:version, op:operation, meta:meta )
+
+          if document.comitted_version + OPS_BEFORE_COMMIT <= document.version
+            logger.debug "Snapshotting #{document}"
+            data = {}
+            data[:meta] = {mtime: Time.now}
+            data[:v] = version
+            data[:snapshot] = snapshot
+            document.write_snapshot data, nil
+          end
         end
       end
 

@@ -13,6 +13,12 @@ module Share
       validate!
     end
 
+    def to_s
+      "<#{self.class} #{@data} >"
+    end
+
+    alias inspect to_s
+
     def validate!
       if (operation? || close?) && ( create? || snapshot? || open? )
         raise ProtocolError.new \

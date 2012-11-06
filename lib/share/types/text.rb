@@ -4,16 +4,16 @@ module Share
       extend ::Share::Types::Transform
       extend self
 
-      INSERT = :i
-      DELETE = :d
-      PATH = POSITION = :p
+      INSERT = 'i'
+      DELETE = 'd'
+      PATH = POSITION = 'p'
       DEFAULT_VALUE = ""
 
       class MissingInsertOrDelete < ArgumentError; end
       class DeletedDifferentTextFromSameRegion < StandardError; end
 
       def logger
-        Rails.logger
+        Share.logger
       end
 
       def inject(left, position, right)

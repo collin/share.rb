@@ -54,15 +54,17 @@ module Share
         return response
       end
 
-      if message.snapshot?
-        response[:snapshot] = document.snapshot
-      end
 
       if message.open?
         logger.debug "opening document #{document}"
         @app.subscribe_to(@current_document, message.version)
         response[:open] = true
         response[:v] = document.version
+      end
+
+      if message.snapshot?
+        logger.debug "Setting response snapshot #{document.snapshot}"
+        response[:snapshot] = document.snapshot
       end
 
       if message.close?

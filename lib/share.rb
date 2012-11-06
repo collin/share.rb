@@ -3,6 +3,14 @@ require "thread"
 
 $LOAD_PATH.push File.join __FILE__, ".."
 module Share
+  def self.logger
+    if defined?(Rails)
+      Rails.logger
+    else
+      require 'logger'
+      Logger.new(STDOUT)
+    end
+  end
 
   require "share/action"
   require "share/session"

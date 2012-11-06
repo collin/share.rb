@@ -45,6 +45,10 @@ module Share
 
         serialize :op, JSON
         serialize :meta, JSON
+
+        def op
+          HashWithIndifferentAccess.new(super)
+        end
       end
 
       module TypeLoader
@@ -106,15 +110,24 @@ module Share
         end
 
         def get_snapshot
-          @get_snapshot ||= Snapshot.where(doc: @name).order('v DESC').first
+          @get_snapshot ||= most_recent_snapshot
+        end
+
+        def most_recent_snapshot
+          Snapshot.where(doc: @name).order('v DESC').first
         end
 
         def write_snapshot(data, meta)
-          Snapshot.where(doc: @name).update_attributes(
+          Snapshot.create!(
+            doc: @name,
             v: data[:v],
             snapshot: data[:snapshot],
-            meta: data[:meta]
+            meta: data[:meta],
+            _type: type
           )
+          self.snapshot = data[:snapshot]
+          super
+          self
         end
 
         def get_ops(start_at, end_at=MAX_VERSION)
