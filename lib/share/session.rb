@@ -16,7 +16,7 @@ module Share
     end
 
     def logger
-      Rails.logger
+      Share.logger
     end
 
     def create(document_id, type, meta)

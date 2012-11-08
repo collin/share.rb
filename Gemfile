@@ -3,13 +3,11 @@ source "https://rubygems.org"
 
 gemspec
 
-group "development", "test" do
-  gem "rake"
-  gem "rspec"
-  gem "shoulda-matchers"  
-end
+gem "rspec"
+gem "rake"
+gem "shoulda-matchers"  
 
-group "development" do
+group :test do
   gem "guard"
   gem "guard-rspec"
   gem "debugger"

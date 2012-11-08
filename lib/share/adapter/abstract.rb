@@ -9,7 +9,7 @@ module Share
         attr_accessor :snapshot, :version, :comitted_version
         attr_reader :name
 
-        def logger; Rails.logger end
+        def logger; Share.logger end
 
         def initialize(name)
           @name = name

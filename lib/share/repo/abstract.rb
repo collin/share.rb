@@ -8,7 +8,7 @@ module Share
 
       class MissingAdapterError < ArgumentError; end
 
-      def logger; Rails.logger end
+      def logger; Share.logger end
 
       def initialize(options = {})
         logger.debug "Initializing #{self}"

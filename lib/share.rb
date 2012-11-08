@@ -6,7 +6,7 @@ module Share
   def self.logger
     @logger ||= begin 
       logger = if defined?(Rails)
-        Rails.logger.dup
+        Share.logger.dup
       else
         require 'logger'
         Logger.new(STDOUT)

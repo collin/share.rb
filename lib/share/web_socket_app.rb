@@ -15,7 +15,7 @@ module Share
     def dup; self end # sounds dangerous!
 
     def logger
-      Rails.logger
+      Share.logger
     end
 
     def subscribe_to(document_id, at_version)

@@ -10,7 +10,7 @@ module Share
     end
 
     def logger
-      Rails.logger
+      Share.logger
     end
 
     def respond_to(message)

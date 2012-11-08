@@ -15,6 +15,7 @@ module Share
       LIST_DELETE = 'ld'
       LIST_MOVE = 'lm'
       NUMBER_ADD = 'na'
+      DEFAULT_VALUE = {}
 
       class InvalidPathError < ArgumentError; end
       class InvalidNumberAddElement < ArgumentError; end
