@@ -4,11 +4,15 @@ require "thread"
 $LOAD_PATH.push File.join __FILE__, ".."
 module Share
   def self.logger
-    if defined?(Rails)
-      Rails.logger
-    else
-      require 'logger'
-      Logger.new(STDOUT)
+    @logger ||= begin 
+      logger = if defined?(Rails)
+        Rails.logger.dup
+      else
+        require 'logger'
+        Logger.new(STDOUT)
+      end
+      logger.level = Logger::INFO
+      logger
     end
   end
 

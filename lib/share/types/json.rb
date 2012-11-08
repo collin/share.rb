@@ -519,7 +519,7 @@ module Share
             end
 
           elsif other.key?(OBJECT_INSERT) && other.key?(OBJECT_DELETE)
-            logger.debug "HERE"
+            logger.debug "INS/DEL"
             logger.debug [component_path, other_path, common]
             logger.debug [component_path[common] == other_path[common]]
             logger.debug [component_path[common], other_path[common]]
@@ -536,6 +536,7 @@ module Share
               else
                 # noop if the other component is deleting the same object
                 # (or any parent)
+                logger.debug "RETURN DEST #{destination}"
                 return destination
               end
             end

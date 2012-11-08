@@ -38,12 +38,12 @@ describe Text = Share::Types::JSON do
       right = [{'p' => [],'od' => 0,'oi' => 15},{'p' => [],'na' => 4},{'p' => [],'na' => 1},{'p' => [],'na' => 1}]
       left = [{'p' => [],'na' => 4},{'p' => [],'na' => -1}]
       
-      right_ = JSON.transform(left, right, 'left')
-      left_ = JSON.transform(right, left, 'right')
+      right_ = JSON.transform(right, left, 'left')
+      left_ = JSON.transform(left, right, 'right')
 
       s_c = JSON.apply rightHas, left_
       c_s = JSON.apply leftHas, right_
-      Logger.new(STDOUT).debug [:focus, s_c, c_s]
+
       s_c.should == c_s
     end
   end
@@ -333,11 +333,12 @@ describe Text = Share::Types::JSON do
       # test diamond property
       rightOps = [ {"p" => [],"od" => nil,"oi" => {}} ]
       leftOps = [ {"p" => [],"od" => nil,"oi" => ""} ]
+
       rightHas = JSON.apply(nil, rightOps)
       leftHas = JSON.apply(nil, leftOps)
-        
-      right_ = JSON.transform(leftOps, rightOps, 'left')
-      left_ = JSON.transform(rightOps, leftOps, 'right')
+
+      left_ = JSON.transform(leftOps, rightOps, 'left')
+      right_ = JSON.transform(rightOps, leftOps, 'right')
 
       JSON.apply(rightHas, left_).should == leftHas
       JSON.apply(leftHas, right_).should == leftHas
