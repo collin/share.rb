@@ -211,7 +211,7 @@ module Share
 
       def normalize(operation)
         new_op = []
-        operation = [operation] unless op.is_a?(Array)
+        operation = [operation] unless operation.is_a?(Array)
         operation.each { |component| _append new_op, component }
         new_op
       end

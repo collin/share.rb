@@ -1,6 +1,7 @@
-require 'spec_helper'
+  require 'spec_helper'
 
-describe Text = Share::Types::Text do
+describe Share::Types::Text do
+  Text = Share::Types::Text
   context "compress" do
     it "is sane" do
       def check_sanity(ops)
