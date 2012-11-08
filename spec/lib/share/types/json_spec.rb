@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Text = Share::Types::JSON do
+describe Share::Types::JSON do
   JSON = Share::Types::JSON
   context "sanity" do
     it 'compose od,oi --> od+oi' do
