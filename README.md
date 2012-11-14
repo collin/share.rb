@@ -17,4 +17,12 @@ port of sharejs server to Ruby ( rack/thin )
       <img src="https://travis-ci.org/collin/share.rb.png">
     </td>
   </tr>
+
+  <tr>
+    <td>Is it any good?</td>
+    <td>
+      [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/collin/share.rb)
+    </td>
+  </tr>
+
 </table>
