@@ -1,0 +1,139 @@
+#document {
+  font-family: monofur;
+  li, ol, dl, dd, dt {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    vertical-align: top;
+  }
+
+  dl {
+    display: inline-table;
+  }
+
+  dl:before { content: "{"; }
+  dl:after { content: "}"; }
+
+  ol:before { content: "["; }
+  ol:after { content: "]"; }
+
+  ol > li:not(:first-child):after { 
+    content: "";
+    vertical-align: bottom;
+  }
+
+  ol { 
+    counter-reset: item; 
+    display: inline-block;
+  }
+
+  ol > li:before {
+    content: counter(item) ": ";
+    vertical-align: top;
+  }
+  ol > li:not(:first-child):after {
+    counter-increment: item;
+  }
+
+  dl > li {
+    display: table-row;
+  }
+
+  dd, dt {
+    display: table-cell;
+  }
+
+  dt {
+    text-align: right;
+    color: green;
+  }
+
+  dt:after {
+    content: ":";
+    margin-right: 5px;
+  }
+
+  @mixin expandable($open, $close) {
+    &:before {
+      color: #999;
+      content: $open;
+    }
+
+    &.closed:before {
+      content: $open
+    }    
+    &:hover:before {
+      color: black
+    }          
+  }
+
+  li.Object:not(.Property, .Atom) > dl {
+    @include expandable("{", "}");
+  }
+  li.Array:not(.Property, .Atom) > ol {
+    @include expandable("[", "]");
+  }
+  li.Object:not(.Property, .Atom) > dt {
+    @include expandable("{", "}");
+  }
+
+  span {
+    display: inline-block;
+    min-width: 20px;
+  }
+
+  dt br {
+    display: none;
+  }
+
+  button {
+    visibility: hidden;
+    border-radius: 100%;
+    background: #999;
+    color: white;
+    border: none;
+    width: 10px;
+    height: 10px;
+    padding: 0;
+    line-height: 2px;
+    &.ItemCreator:hover {
+      background: green;
+      cursor: pointer;
+    }
+
+    &.ItemRemover:hover {
+      background: red;
+      cursor: pointer;
+    }
+  }
+
+  :hover > button {
+    visibility: visible;
+  }
+
+  span.Number {
+    color: blue;
+  }
+
+  span.String {
+    color: red;
+    &:before, &:after { content: "\""; }
+  }
+
+}
+
+popup {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  > * {
+    width: 300px;
+    margin: 0 auto;
+    margin-top: 200px;
+    background: white;
+    border-radius: 4px;
+  }
+}

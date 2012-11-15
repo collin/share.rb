@@ -83,8 +83,11 @@
   exports['_bt'] = bootstrapTransform = function(type, transformComponent, checkValidOp, append) {
     var transformComponentX, transformX;
     transformComponentX = function(left, right, destLeft, destRight) {
+      console.log("transformComponentX_left");
       transformComponent(destLeft, left, right, 'left');
-      return transformComponent(destRight, right, left, 'right');
+      console.log("transformComponentX_right");
+      transformComponent(destRight, right, left, 'right');
+      return console.log("transformComponentX_end");
     };
     type.transformX = type['transformX'] = transformX = function(leftOp, rightOp) {
       var k, l, l_, newLeftOp, newRightOp, nextC, r, r_, rightComponent, _i, _j, _k, _l, _len, _len2, _len3, _len4, _ref, _ref2;
@@ -97,7 +100,9 @@
         k = 0;
         while (k < leftOp.length) {
           nextC = [];
+          console.log(["next_component pre", newLeftOp, nextC]);
           transformComponentX(leftOp[k], rightComponent, newLeftOp, nextC);
+          console.log(["next_component aft", newLeftOp, nextC]);
           k++;
           if (nextC.length === 1) {
             rightComponent = nextC[0];
@@ -138,6 +143,7 @@
       if (otherOp.length === 0) {
         return op;
       }
+      console.log(['transform', op, otherOp, type, op.length, otherOp.length]);
       if (op.length === 1 && otherOp.length === 1) {
         return transformComponent([], op[0], otherOp[0], type);
       }
@@ -737,7 +743,7 @@
       this.socket = new WebSocket(host);
       this.socket.onopen = __bind(function() {
         this.connected = true;
-        this.onopen;
+        this.onopen();
         return this.flush();
       }, this);
       this.socket.onerror = __bind(function(error) {
@@ -785,6 +791,7 @@
   Connection = (function() {
     function Connection(host, authentication) {
       this.docs = {};
+      this.numDocs = 0;
       this.state = 'connecting';
       this.socket = typeof useSockJS !== "undefined" && useSockJS !== null ? new SockJS(host) : typeof useWS !== "undefined" && useWS !== null ? new Socket(host) : new BCSocket(host, {
         reconnect: true

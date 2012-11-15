@@ -1,3 +1,12 @@
+PATH
+  remote: ~/Code/io_engine
+  specs:
+    io_engine (0.0.1)
+      actionpack
+      coffee-rails
+      rails (~> 3.2.8)
+      websocket-rack
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -42,6 +51,8 @@ GEM
     em-websocket (0.3.8)
       addressable (>= 2.1.1)
       eventmachine (>= 0.12.9)
+    erector (0.9.0)
+      treetop (>= 1.2.3)
     erubis (2.7.0)
     eventmachine (1.0.0)
     execjs (1.4.0)
@@ -121,6 +132,8 @@ PLATFORMS
 
 DEPENDENCIES
   coffee-rails (~> 3.2.1)
+  erector
+  io_engine!
   jquery-rails
   rails (= 3.2.8)
   sass-rails (~> 3.2.3)

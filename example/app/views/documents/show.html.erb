@@ -1,0 +1,13 @@
+<h1><%= @document_id %></h1>
+<article id="document"></article>
+
+<script type="text/javascript">
+var elem = document.getElementById('document');
+var url = "ws://<%= request.host_with_port %>/documents/share";
+sharejs.open('document-<%= @document_id %>', 'json', url, function(error, doc) {
+  _document = document.querySelector("#document");
+  console.log( doc)
+  if (doc.get() === null) doc.set({})
+  new RootEditor(_document, doc)
+});
+</script>

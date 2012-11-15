@@ -1,18 +1,18 @@
 require "action_controller/share"
-class PadsController < ApplicationController
+class DocumentsController < ApplicationController
   extend ActionController::Share
   share_with :websocket
 
   def show
-    @pad_id = params[:id]
+    @document_id = params[:id]
   end
 
   def share
-    share_repository pads_repository
+    share_repository documents_repository
   end
 
-  def pads_repository
-    Thread.current[:pads_repository] ||= begin
+  def documents_repository
+    Thread.current[:documents_repository] ||= begin
       Share::Repo::InProcess.new(
         adapter: Share::Adapter::ActiveRecord::Document
       )

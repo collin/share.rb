@@ -3,8 +3,7 @@ require File.expand_path('../boot', __FILE__)
 require 'rails/all'
 
 require_relative("../../lib/share")
-require_relative("../../lib/action_controller/web_socket")
-require_relative("../../lib/action_controller/share")
+require_relative("../../lib/share/io_engine")
 require_relative("../../lib/share/adapter/active_record")
 
 if defined?(Bundler)
