@@ -21,6 +21,15 @@ port of sharejs server to Ruby ( rack/thin )
   </tr>
 
   <tr>
+    <td>Dependencies</td>
+    <td>
+      <a href="https://gemnasium.com/collin/share.rb">
+        <img src="https://gemnasium.com/collin/share.rb.png">
+      </a>
+    </td>
+  </tr>
+
+  <tr>
     <td>Is it any good?</td>
     <td>
       <a href="https://codeclimate.com/github/collin/share.rb">
