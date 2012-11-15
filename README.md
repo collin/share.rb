@@ -7,7 +7,9 @@ port of sharejs server to Ruby ( rack/thin )
   <tr>
     <td>ShareJS commit</td>
     <td>
-      <a href="https://github.com/josephg/ShareJS/commit/7a953a8a30fa0309fa39f0e964235c24dd6ae588">7a953a8a30fa0309fa39f0e964235c24dd6ae588</a>
+      <a href="https://github.com/josephg/ShareJS/compare/7a953a8...master">
+        compare 7a953a8a to master
+      </a>
     </td>
   </tr>
 
