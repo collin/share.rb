@@ -1,5 +1,3 @@
-# # require "action_controller/io_engine"
-
 module ActionController
   module Share
     def share_with(backend)

@@ -16,8 +16,6 @@ module Share
     end
   end
 
-  require "io_engine"
-
   require "share/action"
   require "share/session"
   require "share/message"
