@@ -1,16 +1,25 @@
+# # require "action_controller/io_engine"
+
 module ActionController
   module Share
-    extend ActiveSupport::Concern
+    def share_with(backend)
+      case backend
+      when :websocket
+        require "action_controller/web_socket"
+        require "share/web_socket_app"
+        include ::ActionController::WebSocket
+        include ::ActionController::WebSocketShare
+      else
+        raise "ActionController::Share doesnt't have a backend #{backend}"
+      end
+    end
+  end
 
-    include ActionController::WebSocket
-
+  module WebSocketShare
     def share_repository(repository)
-      logger.debug "Initializing Share::Session"
       session = ::Share::Session.new(connection_data, repository)
-      logger.debug "Bulding Share::WebSocketApp"
-      socket_application = ::Share::WebSocketApp.new(repository, session)
-      logger.debug "Upgrading to WebSocket"
-      websocket_upgrade socket_application
+      application = ::Share::WebSocketApp.new(repository, session)
+      websocket_upgrade application
     end
 
     def connection_data

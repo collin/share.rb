@@ -5,22 +5,23 @@ $LOAD_PATH.push File.join __FILE__, ".."
 module Share
   def self.logger
     @logger ||= begin 
-      logger = if defined?(Rails)
-        Share.logger.dup
+      _logger = if defined?(Rails)
+        Rails.logger.dup
       else
         require 'logger'
         Logger.new(STDOUT)
       end
-      logger.level = Logger::INFO
-      logger
+      # _logger.level = Logger::INFO
+      _logger
     end
   end
+
+  require "io_engine"
 
   require "share/action"
   require "share/session"
   require "share/message"
   require "share/protocol"
-  require "share/web_socket_app"
 
   require "share/repo/abstract"
   require "share/repo/in_process"

@@ -19,6 +19,6 @@ Gem::Specification.new do |s|
 
   s.add_dependency "thin", "~> 1.4.1"
   s.add_dependency "websocket-rack", "~> 0.4.0"
-  s.add_dependency "activesupport", "~> 3.0.0"
+  s.add_dependency "activesupport", "~> 3.2.0"
   s.add_dependency "thread_safe", "~> 0.0.3"
 end
