@@ -39,5 +39,30 @@ port of sharejs server to Ruby ( rack/thin )
       </a>
     </td>
   </tr>
-
 </table>
+
+# Give it a whirl!
+
+
+## Run this
+```sh
+git clone https://github.com/collin/share.rb.git
+cd share.rb/example
+bundle
+rails runner "Share::Adapter::ActiveRecord::Document.create_tables"
+rails server
+```
+
+## Browse to
+### Pads:
+```
+localhost:3000/documents/my-first-pad
+```
+### Documents:
+```
+localhost:3000/documents/my-first-document
+```
+
+
+
+
