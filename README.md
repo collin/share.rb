@@ -14,7 +14,9 @@ port of sharejs server to Ruby ( rack/thin )
   <tr>
     <td>Build Status</td>
     <td>
-      <img src="https://travis-ci.org/collin/share.rb.png">
+      <a href="https://travis-ci.org/collin/share.rb">
+        <img src="https://travis-ci.org/collin/share.rb.png">
+      </a>
     </td>
   </tr>
 
