@@ -8,7 +8,7 @@ port of sharejs server to Ruby ( rack/thin )
     <td>ShareJS commit</td>
     <td>
       <a href="https://github.com/josephg/ShareJS/compare/7a953a8...master">
-        compare 7a953a8a to master
+        <img src="http://gh-compare.herokuapp.com/repos/josephg/ShareJS/compare/7a953a8...master.png">
       </a>
     </td>
   </tr>
